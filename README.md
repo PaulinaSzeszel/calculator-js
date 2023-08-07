@@ -1,2 +1,2 @@
-Click link below to see the project:
+Click the link to see the project:
 https://paulinaszeszel.github.io/calculator-js/
