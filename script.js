@@ -1,6 +1,6 @@
 let input = document.getElementById('inputBox');
 let buttons = document.querySelectorAll('button');
-let dotButton = document.getElementById('dot'); // Agregamos esta línea
+let dotButton = document.getElementById('dot');
 
 let string = '';
 let arr = Array.from(buttons);
@@ -34,7 +34,7 @@ arr.forEach((button) => {
       input.value = string;
     }
     
-    updateDotButton(); // Llamamos a la función para actualizar el estado del botón de punto
+    updateDotButton();
   });
 });
 
