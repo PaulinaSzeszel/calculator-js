@@ -4,8 +4,17 @@ let buttons = document.querySelectorAll('button')
 let string = ''
 let arr = Array.from(buttons)
 
+function checkDot(input, button) {
+  if (input.value.includes(".")) {
+    button.disabled = true;
+  } else {
+    button.disabled = false;
+  }
+}
+
 arr.forEach((button) => {
   button.addEventListener('click', (e) => {
+    checkDot(input, document.getElementById("dot"));
     if (e.target.innerHTML == '=') {
       string = eval(string)
       input.value = string
