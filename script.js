@@ -1,48 +1,50 @@
-let input = document.getElementById('inputBox');
-let buttons = document.querySelectorAll('button');
-let dotButton = document.getElementById('dot'); // Agregamos esta línea
+document.addEventListener("DOMContentLoaded", function () {
+  const inputBox = document.getElementById("inputBox");
+  const buttons = document.querySelectorAll("button");
+  let inputValue = "";
+  let isCalculating = false;
+  let hasDecimal = false;
 
-let string = '';
-let arr = Array.from(buttons);
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const buttonText = button.textContent;
 
-function updateDotButton() {
-  if (string.includes('.')) {
-    dotButton.disabled = true;
-  } else {
-    dotButton.disabled = false;
-  }
-}
-
-arr.forEach((button) => {
-  button.addEventListener('click', (e) => {
-    if (e.target.innerHTML == '=') {
-      string = eval(string);
-      input.value = string;
-    } else if (e.target.innerHTML == 'AC') {
-      string = '';
-      input.value = string;
-    } else if (e.target.innerHTML == 'DEL') {
-      string = string.substring(0, string.length - 1);
-      input.value = string;
-    } else if (e.target.innerHTML == '.') {
-      if (!string.endsWith('.')) {
-        string += e.target.innerHTML;
-        input.value = string;
+      if (buttonText === "AC") {
+        inputValue = "";
+        isCalculating = false;
+        hasDecimal = false;
+      } else if (buttonText === "DEL") {
+        inputValue = inputValue.slice(0, -1);
+        hasDecimal = false;
+      } else if (buttonText === "=") {
+        if (!isCalculating) {
+          try {
+            inputValue = evalExpression(inputValue);
+            isCalculating = true;
+          } catch (error) {
+            inputValue = "Error";
+          }
+        }
+      } else if (buttonText === ".") {
+        if (!hasDecimal) {
+          inputValue += buttonText;
+          hasDecimal = true;
+        }
+      } else {
+        inputValue += buttonText;
+        isCalculating = false;
       }
-    } else {
-      string += e.target.innerHTML;
-      input.value = string;
-    }
-    
-    updateDotButton(); // Llamamos a la función para actualizar el estado del botón de punto
-  });
-});
 
-dotButton.addEventListener('click', () => {
-  if (!string.includes('.')) {
-    string += '.';
-    input.value = string;
+      inputBox.value = inputValue;
+    });
+  });
+
+  function evalExpression(expression) {
+    const result = new Function("return " + expression)();
+    return roundToTwoDecimal(result);
   }
-  
-  updateDotButton();
+
+  function roundToTwoDecimal(number) {
+    return Math.round(number * 100) / 100;
+  }
 });
